@@ -1,0 +1,27 @@
+name: conditionals
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name'
+        type: string
+        required: true
+      age:
+        description: 'Age'
+        type: string
+        required: true
+        
+jobs:
+  prohibit:
+    runs-on: latest-ubuntu
+    if: inputs.age < 20
+    steps:
+      - name: Hello
+        run: |
+          echo "Hello ${{inputs.name}}, you are too young"
+  allow:
+    runs-on: ubuntu-latest
+    if: inputs.age >= 20
+    steps:
+      - name: Welcome
+        run: echo "Welcome ${{inputs.name}} to the club"
