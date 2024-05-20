@@ -13,4 +13,5 @@ jobs:
       - name: Say hello
         uses: ./github-actions/actions/js
         with:
-          who-to-greet: ${{ github.event.issue.user.login }}
+          issue-number: ${{ github.event.issue.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}

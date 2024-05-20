@@ -18,23 +18,26 @@ async function createComment(
     return comment.id
   }
 
-try {
-  // `who-to-greet` input defined in action metadata file
-  const issueNumber = core.getInput('issue-number');
-  console.log(`Issue number ${issueNumber}!`);
-  const token = core.getInput('token');
-  const octokit = github.getOctokit(token);
-  const owner = github.context.repo.owner;
-  const repo = github.context.repo.repo;
-  console.log(`Owner ${owner}, repo ${repo}, issueNumber ${issueNumber}!`);
-  const comment = `Hello from the action!`;
-  let id = await createComment(octokit, github.context.repo.owner, github.context.repo.repo, issueNumber, comment);
-  core.info(`Created comment id '${id}' on issue '${issueNumber}'`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
+async function main() {
+    try {
+    const issueNumber = core.getInput('issue-number');
+    console.log(`Issue number ${issueNumber}!`);
+    const token = core.getInput('token');
+    const octokit = github.getOctokit(token);
+    const owner = github.context.repo.owner;
+    const repo = github.context.repo.repo;
+    console.log(`Owner ${owner}, repo ${repo}, issueNumber ${issueNumber}!`);
+    const comment = `Hello from the action!`;
+    let id = await createComment(octokit, github.context.repo.owner, github.context.repo.repo, issueNumber, comment);
+    core.info(`Created comment id '${id}' on issue '${issueNumber}'`);
+    const time = (new Date()).toTimeString();
+    core.setOutput("time", time);
+    // Get the JSON webhook payload for the event that triggered the workflow
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
+    } catch (error) {
+    core.setFailed(error.message);
+    }
 }
+
+main();
